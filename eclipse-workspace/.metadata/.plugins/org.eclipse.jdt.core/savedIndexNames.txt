@@ -1,0 +1,12 @@
+INDEX VERSION 1.131+/Users/truperti/eclipse-workspace/.metadata/.plugins/org.eclipse.jdt.core
+4083394299.index
+3135995500.index
+1401477977.index
+4099648560.index
+1865797976.index
+3154757206.index
+1424301888.index
+3339128658.index
+762286353.index
+357054388.index
+2370458045.index
