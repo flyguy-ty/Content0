@@ -16,13 +16,15 @@ public class contentDAO {
         conn = ConnectionUtil.getConnection();;
     }
 
-    public ArrayList<Content> getContent() {
+    public ArrayList getContent() {
         return null;
     }
 
-    public static Content getAllContent() throws SQLException {
-        Content myContent = null;
 
+
+        //User mood and free time input
+    public static ArrayList MoodandTime() throws SQLException {
+        ArrayList myContent = new ArrayList();
         String mood= null;
         int timelength = 0;
         Scanner sc = new Scanner(System.in);
@@ -32,6 +34,8 @@ public class contentDAO {
             System.out.println("How much time do you have?");
             timelength = Integer.parseInt(sc.nextLine());
             System.out.println("Your input: " + mood + ',' + timelength);
+
+
         }
 
         PreparedStatement statement = conn.prepareStatement("Select title From Content Where mood = ?" +
@@ -44,13 +48,42 @@ public class contentDAO {
 
 
         while(rs.next()){
-            myContent = new Content(
-                    rs.getString("title"));
+            Content nextThing = new Content(rs.getString("title"));
+
+//            System.out.println(nextThing.toString());
+            myContent.addElement(nextThing.toString());
         }
         rs.close();
         return myContent;
     }
 
+    public void Adder() throws SQLException {
+        ArrayList myContent = new ArrayList();
+
+        String title = null;
+        String mood = null;
+        int timelength = 0;
+        Scanner sc = new Scanner(System.in);
+
+        Statement statement = conn.createStatement();
+
+        while (title == null & mood == null & timelength == 0) {
+            System.out.println("What is the title?");
+            title = sc.nextLine();
+            System.out.println("Describe the mood in one word");
+            mood = sc.nextLine();
+            System.out.println("How long is it?");
+            timelength = sc.nextInt();
+        }
+
+        PreparedStatement insert = conn.prepareStatement("insert into content (title, mood, timelength) values(?,?,?)");
+        int parameterIndex = 0;
+        insert.setString(++parameterIndex, title);
+        insert.setString(++parameterIndex,mood);
+        insert.setInt(++parameterIndex, timelength);
+
+        insert.executeUpdate();
+    }
 }
 
 

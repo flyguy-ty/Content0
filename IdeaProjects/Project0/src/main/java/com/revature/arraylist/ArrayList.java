@@ -1,42 +1,106 @@
 package com.revature.arraylist;
 
 import java.util.Arrays;
+//Testarino
+public class ArrayList{
 
-//Lifted from Stack Overflow
-//https://stackoverflow.com/questions/35880131/creating-an-array-list-from-scratch
-public class ArrayList <T extends Object> {
+    // Initialize array
+    String[] things = new String[1];
+    // Constructor that creates an initial array of some size;
+    public ArrayList(){
+        //Don't think nothing needs to be here
+    }
+//    The current amount of somethings;
+//    int amount = things.length;
 
-    private static int initialCapacity = 5;
-    private static int currentSize;
-    private Object[] myArrayList = {}, temp = {};
+    // Get method that returns the something of a given index;
 
-    private static int currentIndex = 0;
+    public String getElement(int i) {
 
-    public ArrayList() {
-        myArrayList = new Object[initialCapacity];
+        if (i >= 0) {
+            return things[i];
+        }else{
+            System.out.println("Index out of bounds");
+            return null;
+        }
+
     }
 
-    public ArrayList(int size) { //creates custom sized Array of Objects
-        myArrayList = new Object[size];
-    }
+    //    Contains method
+    public void contains(String thing, String[] list){
 
-    public void addElement(Object entry) {
-        //add element directy
-        myArrayList[currentIndex] = entry;
-        currentSize = myArrayList.length;
-        currentIndex++;
-        if (currentIndex == currentSize) {
-            DoubleArray(currentSize);
+        int not = 0;
+        for (int i = 0; i<list.length; i++){
+            if (list[i].equals(thing)){
+                System.out.println("thing " + thing + " is on the list.");
+                not = -1;
+                break;
+            }
+        }
+        if (not != -1){
+            System.out.println("thing " + thing + " is NOT on the list.");
         }
     }
 
-    private void DoubleArray(int currentSize) {
-        temp = myArrayList.clone();
-        myArrayList = new ArrayList[2 * currentSize];  //myObject pointer big size data structure
+    //    Add method
+    int current = 0;
+    //    add method takes an array and a new element passed from main and returns a new array that includes the new element
+    public String[] addElement(String thing){
 
-//         myObject = temp.clone(); //probably I can do this here as well. Need to check this
-        System.arraycopy(temp, 0, myArrayList, 0, currentSize);
+        if (current+1 > things.length){
+            String[] newArrayList = new String[things.length+1];
+
+            for (int i = 0; i < things.length; i++){
+                newArrayList[i] = things[i];
+            }
+            things = newArrayList;
+            things[current] = thing;
+            current++;
+        }else {
+            things[current] = thing;
+            current++;
+        }
+
+//        System.out.println("thing " + thing + " added to the list");
+//        System.out.println(Arrays.toString(things));
+        return things;
 
     }
 
+    public String[] addElement(String thing, int index){
+//        System.out.println(things.length);
+        if (index+1 > things.length){
+            String[] newArrayList = new String[index+1];
+            for (int i = 0; i < things.length; i++){
+                newArrayList[i] = things[i];
+            }
+            things = newArrayList;
+            things[index] = thing;
+            current = index;
+        }else {
+            if (things[index] != null){
+
+                String[] newArrayList = new String[current+1];
+                for (int i=0; i < index; i++){
+                    newArrayList[i] = things[i];
+                }
+                newArrayList[index] = thing;
+                for (int i=index+1; i<current+1; i++){
+                    newArrayList[i] = things[i-1];
+                }
+                things = newArrayList;
+                current++;
+            }else{
+                things[index] = thing;
+            }
+        }
+//        System.out.println("thing " + thing + " added to the list");
+//        System.out.println(Arrays.toString(things));
+        return things;
+    }
+
+    public int getLength(){
+        return current;
+    }
 }
+

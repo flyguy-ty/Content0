@@ -8,10 +8,12 @@ import com.revature.arraylist.ArrayList;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.Random;
 
 //The app is called Contento
 public final class Driver {
     public static Connection conn = ConnectionUtil.getConnection();
+
     public static void main(String[] args) throws SQLException {
 
         conn.setAutoCommit(false);
@@ -29,18 +31,32 @@ public final class Driver {
         either all transactions are completed, or all transactions fail
          */
 
+
         contentDAO contentdao = new contentDAO();
 
-
-        try {
-            Content someContent = contentdao.getAllContent();
-                System.out.println(someContent);
-        }catch(SQLException e){
-            e.printStackTrace();
+        //Opening interface
+        Scanner sc = new Scanner(System.in);
+        String path = null;
+        boolean loop = true;
+        while (loop) {
+            System.out.println("Hello! What would you like to do?");
+            System.out.println("[Q] Get something to watch " + "\n"
+                    + "[A] Add something to the database");
+            path = sc.nextLine();
+            loop = false;
         }
 
-
-
-
+        System.out.println(path);
+        if (path.equals("q")) {
+            ArrayList content = contentdao.MoodandTime();
+            Random rand = new Random();
+            int upper = content.getLength() - 1;
+            int int_random = rand.nextInt(upper);
+//            System.out.println(upper);
+//            System.out.println(int_random);
+            System.out.println(content.getElement(int_random));
+            } else if (path.equals("a")){
+                contentdao.Adder();
+            }
     }
 }
