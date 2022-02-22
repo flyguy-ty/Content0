@@ -27,19 +27,15 @@ public class ArrayList{
     }
 
     //    Contains method
-    public void contains(String thing, String[] list){
-
-        int not = 0;
-        for (int i = 0; i<list.length; i++){
-            if (list[i].equals(thing)){
+    public boolean contains(String thing){
+        for (int i = 0; i<things.length; i++) {
+            if (things[i].equals(thing)) {
                 System.out.println("thing " + thing + " is on the list.");
-                not = -1;
-                break;
+                return true;
             }
-        }
-        if (not != -1){
             System.out.println("thing " + thing + " is NOT on the list.");
         }
+        return false;
     }
 
     //    Add method
@@ -67,37 +63,6 @@ public class ArrayList{
 
     }
 
-    public String[] addElement(String thing, int index){
-//        System.out.println(things.length);
-        if (index+1 > things.length){
-            String[] newArrayList = new String[index+1];
-            for (int i = 0; i < things.length; i++){
-                newArrayList[i] = things[i];
-            }
-            things = newArrayList;
-            things[index] = thing;
-            current = index;
-        }else {
-            if (things[index] != null){
-
-                String[] newArrayList = new String[current+1];
-                for (int i=0; i < index; i++){
-                    newArrayList[i] = things[i];
-                }
-                newArrayList[index] = thing;
-                for (int i=index+1; i<current+1; i++){
-                    newArrayList[i] = things[i-1];
-                }
-                things = newArrayList;
-                current++;
-            }else{
-                things[index] = thing;
-            }
-        }
-//        System.out.println("thing " + thing + " added to the list");
-//        System.out.println(Arrays.toString(things));
-        return things;
-    }
 
     public int getLength(){
         return current;

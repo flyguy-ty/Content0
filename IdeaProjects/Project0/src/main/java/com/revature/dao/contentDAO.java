@@ -13,7 +13,7 @@ public class contentDAO {
     static Connection conn;
 
     public contentDAO(){
-        conn = ConnectionUtil.getConnection();;
+        conn = ConnectionUtil.getConnection();
     }
 
     public ArrayList getContent() {
@@ -27,6 +27,10 @@ public class contentDAO {
         ArrayList myContent = new ArrayList();
         String mood= null;
         int timelength = 0;
+
+        PreparedStatement statement = conn.prepareStatement("Select title From Content Where mood = ?" +
+                " AND timelength <= ?" );
+
         Scanner sc = new Scanner(System.in);
         while (mood == null & timelength == 0) {
             System.out.println("What is your current mood?");
@@ -34,12 +38,9 @@ public class contentDAO {
             System.out.println("How much time do you have?");
             timelength = Integer.parseInt(sc.nextLine());
             System.out.println("Your input: " + mood + ',' + timelength);
-
-
         }
 
-        PreparedStatement statement = conn.prepareStatement("Select title From Content Where mood = ?" +
-                                                                " AND timelength < ?" );
+
         int parameterIndex = 0;
         statement.setString(++parameterIndex, mood);
         statement.setInt(++parameterIndex, timelength);
@@ -49,7 +50,6 @@ public class contentDAO {
 
         while(rs.next()){
             Content nextThing = new Content(rs.getString("title"));
-
 //            System.out.println(nextThing.toString());
             myContent.addElement(nextThing.toString());
         }
