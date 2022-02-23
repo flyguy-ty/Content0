@@ -2,15 +2,12 @@ package com.revature.driver;
 
 import com.revature.model.Content;
 import com.revature.util.ConnectionUtil;
-import com.revature.dao.contentDAO;
-import com.revature.arraylist.ArrayList;
+import com.revature.dao.ContentDAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.Random;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 //The app is called Contento
@@ -38,46 +35,73 @@ public final class Driver {
          */
 
 
-        contentDAO contentdao = new contentDAO();
+        ContentDAO contentdao = new ContentDAO();
 
         //Opening interface
-        Scanner sc = new Scanner(System.in);
+        Scanner sc1 = new Scanner(System.in);
         String path = null;
-        boolean loop = true;
+
         System.out.println("Hello! I am Content0!");
         System.out.println("How may I help you?");
-        while (true) {
 
+        while (true) {
             System.out.println("[R] Recommend some content " + "\n"
-                    + "[A] Add something to the database" + "\n" + "[Q] Quit program");
-            path = sc.nextLine();
-            System.out.println(path);
+                    + "[A] Add something to the database" + "\n" + "[Q] Quit program" + "\n");
+            path = sc1.nextLine();
+//            System.out.println(path);
+
             if (path.equals("r")|path.equals("R")) {
-                ArrayList content = contentdao.MoodandTime();
-                Random rand = new Random();
-                int upper = content.getLength();
-                if (upper <= 0){
-                    System.out.println("Sorry, I got nothing :/ \n");
-//                    System.out.println("Wanna try again?");
-                }else {
-                    Driver.log.info(upper);
-                    int int_random = rand.nextInt(upper);
-                    System.out.println(int_random);
-                    System.out.println(content.getElement(int_random));
-                    break;
+                String mood= null;
+                int timelength = 0;
+                Scanner sc2 = new Scanner(System.in);
+                while (mood == null & timelength == 0) {
+                    System.out.println("What is your current mood?");
+                    mood = sc2.nextLine();
+                    System.out.println("How much time do you have?");
+                    timelength = Integer.parseInt(sc2.nextLine());
+                    System.out.println("Your input: " + mood + ", " + timelength);
                 }
+                try {
+//                    System.out.println("test1");
+                    Content content = contentdao.MoodandTime(mood, timelength);
+//                    System.out.println("test2");
+                    //Print the content here or something
+                    if (content == null){
+                        System.out.println("null");
+                        continue;
+                    }else {
+                        System.out.println(content.toString());
+                        break;
+                    }
+                }catch (SQLException e){}
             } else if (path.equals("a")|path.equals("A")){
-                contentdao.Adder();
-                System.out.println("What would you like to do next?");;
+                String title = null;
+                String mood = null;
+                int timelength = 0;
+                Scanner sc3 = new Scanner(System.in);
+                while (title == null & mood == null & timelength == 0) {
+                    System.out.println("What is the title?");
+                    title = sc3.nextLine();
+                    System.out.println("Describe the mood in one word");
+                    mood = sc3.nextLine();
+                    System.out.println("How long is it?");
+                    timelength = sc3.nextInt();
+                }
+                try {
+                    contentdao.Adder(title, mood, timelength);
+                    System.out.println("What would you like to do next?");
+                }catch (SQLException e){}
+
+
             }  else if (path.equals("q")|path.equals("Q")) {
-                System.out.println("See ya!");;
+                System.out.println("See ya!");
+                Driver.log.info("Quitting Program");
                 break;
             }
             else {
+                Driver.log.info("bad entry");
                 System.out.println("Invalid Key");
             }
         }
-
-
     }
 }

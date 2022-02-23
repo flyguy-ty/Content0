@@ -7,9 +7,10 @@ public class Content {
     private String mood;
     private int timelength;
 
-    public Content(String title) {
+    public Content(String title, int timelength) {
 
         this.title = title;
+        this.timelength = timelength;
 
     }
 
@@ -39,7 +40,7 @@ public class Content {
 
     @Override
     public String toString(){
-        return "For you" +
-                ", " + title;
+        return "For you: "
+                 + title + " (" + timelength + " min"+")";
     }
 }

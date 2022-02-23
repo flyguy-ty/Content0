@@ -1,11 +1,12 @@
 package com.revature.arraylist;
 
-import java.util.Arrays;
+import com.revature.model.Content;
+
 //Testarino
 public class ArrayList{
 
     // Initialize array
-    String[] things = new String[1];
+    Content[] things = new Content[1];
     // Constructor that creates an initial array of some size;
     public ArrayList(){
         //Don't think nothing needs to be here
@@ -15,7 +16,7 @@ public class ArrayList{
 
     // Get method that returns the something of a given index;
 
-    public String getElement(int i) {
+    public Content getElement(int i) {
 
         if (i >= 0) {
             return things[i];
@@ -27,7 +28,7 @@ public class ArrayList{
     }
 
     //    Contains method
-    public boolean contains(String thing){
+    public boolean contains(Content thing){
         for (int i = 0; i<things.length; i++) {
             if (things[i].equals(thing)) {
                 System.out.println("thing " + thing + " is on the list.");
@@ -41,10 +42,10 @@ public class ArrayList{
     //    Add method
     int current = 0;
     //    add method takes an array and a new element passed from main and returns a new array that includes the new element
-    public String[] addElement(String thing){
+    public Content[] addElement(Content thing){
 
         if (current+1 > things.length){
-            String[] newArrayList = new String[things.length+1];
+            Content[] newArrayList = new Content[things.length+1];
 
             for (int i = 0; i < things.length; i++){
                 newArrayList[i] = things[i];
@@ -58,7 +59,7 @@ public class ArrayList{
         }
 
 //        System.out.println("thing " + thing + " added to the list");
-//        System.out.println(Arrays.toString(things));
+//        System.out.println(Arrays.toContent(things));
         return things;
 
     }

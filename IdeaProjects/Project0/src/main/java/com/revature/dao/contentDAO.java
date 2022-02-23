@@ -1,18 +1,21 @@
 package com.revature.dao;
 
 import com.revature.arraylist.ArrayList;
+import com.revature.driver.Driver;
 import com.revature.util.ConnectionUtil;
 import com.revature.model.Content;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.Scanner;
+import java.util.Random;
 
 
-public class contentDAO {
+public class ContentDAO {
 
     static Connection conn;
+    public static final Logger log = Logger.getLogger(ContentDAO.class);
 
-    public contentDAO(){
+    public ContentDAO(){
         conn = ConnectionUtil.getConnection();
     }
 
@@ -23,22 +26,12 @@ public class contentDAO {
 
 
         //User mood and free time input
-    public static ArrayList MoodandTime() throws SQLException {
+    public static Content MoodandTime(String mood, int timelength) throws SQLException {
         ArrayList myContent = new ArrayList();
-        String mood= null;
-        int timelength = 0;
 
-        PreparedStatement statement = conn.prepareStatement("Select title From Content Where mood = ?" +
-                " AND timelength <= ?" );
-
-        Scanner sc = new Scanner(System.in);
-        while (mood == null & timelength == 0) {
-            System.out.println("What is your current mood?");
-            mood = sc.nextLine();
-            System.out.println("How much time do you have?");
-            timelength = Integer.parseInt(sc.nextLine());
-            System.out.println("Your input: " + mood + ',' + timelength);
-        }
+//        System.out.println("test3");
+        PreparedStatement statement = conn.prepareStatement("Select title, timelength From Content Where mood = ?" +
+                " AND timelength <= ?");
 
 
         int parameterIndex = 0;
@@ -47,34 +40,40 @@ public class contentDAO {
 
         ResultSet rs = statement.executeQuery();
 
+        while (rs.next()) {
+//            System.out.println("test6");
 
-        while(rs.next()){
-            Content nextThing = new Content(rs.getString("title"));
-//            System.out.println(nextThing.toString());
-            myContent.addElement(nextThing.toString());
+            Content nextThing = new Content(rs.getString("title"), rs.getInt("timelength"));
+//            System.out.println("test6");
+            myContent.addElement(nextThing);
         }
         rs.close();
-        return myContent;
+
+//        System.out.println("test5");
+        Random rand = new Random();
+        int upper = myContent.getLength();
+        int int_random = 0;
+        if (upper <= 0) {
+            Driver.log.info("No matches");
+            System.out.println("Sorry, I got nothing :/ \n");
+//                    System.out.println("Wanna try again?");
+        } else {
+            Driver.log.info(upper);
+            int_random = rand.nextInt(upper);
+            Driver.log.info(int_random);
+//            System.out.println(content.getElement(int_random));
+            Driver.log.info("Recommendation: " + myContent.getElement(int_random));
+        }
+
+//        System.out.println("test4");
+
+        return myContent.getElement(int_random);
     }
 
-    public void Adder() throws SQLException {
+    public static void Adder(String title, String mood, int timelength) throws SQLException {
         ArrayList myContent = new ArrayList();
 
-        String title = null;
-        String mood = null;
-        int timelength = 0;
-        Scanner sc = new Scanner(System.in);
-
         Statement statement = conn.createStatement();
-
-        while (title == null & mood == null & timelength == 0) {
-            System.out.println("What is the title?");
-            title = sc.nextLine();
-            System.out.println("Describe the mood in one word");
-            mood = sc.nextLine();
-            System.out.println("How long is it?");
-            timelength = sc.nextInt();
-        }
 
         PreparedStatement insert = conn.prepareStatement("insert into content (title, mood, timelength) values(?,?,?)");
         int parameterIndex = 0;
@@ -83,6 +82,8 @@ public class contentDAO {
         insert.setInt(++parameterIndex, timelength);
 
         insert.executeUpdate();
+        ContentDAO.log.info(title + " added to content");
+        System.out.println("Thanks for the new content!");
     }
 }
 
