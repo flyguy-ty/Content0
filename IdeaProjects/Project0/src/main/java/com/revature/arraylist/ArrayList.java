@@ -28,13 +28,13 @@ public class ArrayList{
     }
 
     //    Contains method
-    public boolean contains(Content thing){
+    public boolean contains(String title){
         for (int i = 0; i<things.length; i++) {
-            if (things[i].equals(thing)) {
-                System.out.println("thing " + thing + " is on the list.");
+            if (things[i].getTitle().equals(title)) {
+//                System.out.println("thing " + title + " is on the list.");
                 return true;
             }
-            System.out.println("thing " + thing + " is NOT on the list.");
+            System.out.println("title: " + title + ", things[i].getTitle(): "+ things[i].getTitle());
         }
         return false;
     }

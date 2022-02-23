@@ -23,7 +23,7 @@ public class ArrayListTest {
         Content nextThing = new Content("title", 30);
         String title = nextThing.toString();
         list.addElement(nextThing);
-        assertTrue(list.contains(nextThing));
+        assertTrue(list.contains(nextThing.getTitle()));
     }
 
     @Test

@@ -73,17 +73,48 @@ public class ContentDAO {
     public static void Adder(String title, String mood, int timelength) throws SQLException {
         ArrayList myContent = new ArrayList();
 
-        Statement statement = conn.createStatement();
+        PreparedStatement statement = conn.prepareStatement("Select title, timelength From Content Where title = ?");
 
-        PreparedStatement insert = conn.prepareStatement("insert into content (title, mood, timelength) values(?,?,?)");
-        int parameterIndex = 0;
-        insert.setString(++parameterIndex, title);
-        insert.setString(++parameterIndex,mood);
-        insert.setInt(++parameterIndex, timelength);
 
-        insert.executeUpdate();
-        ContentDAO.log.info(title + " added to content");
-        System.out.println("Thanks for the new content!");
+        statement.setString(1, title);
+
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+//            System.out.println("test6");
+            Content nextThing = new Content(rs.getString("title"), rs.getInt("timelength"));
+//            System.out.println("test6");
+            myContent.addElement(nextThing);
+        }
+        rs.close();
+
+        if (myContent.getLength()>0){
+            if (myContent.contains(title)){
+                System.out.println("We already have that!");
+            }else{
+                PreparedStatement insert = conn.prepareStatement("insert into content (title, mood, timelength) values(?,?,?)");
+                int parameterIndex = 0;
+                insert.setString(++parameterIndex, title);
+                insert.setString(++parameterIndex,mood);
+                insert.setInt(++parameterIndex, timelength);
+
+                insert.executeUpdate();
+                ContentDAO.log.info(title + " added to content");
+                System.out.println("Thanks for the new content!");
+            }
+        }else{
+            PreparedStatement insert = conn.prepareStatement("insert into content (title, mood, timelength) values(?,?,?)");
+            int parameterIndex = 0;
+            insert.setString(++parameterIndex, title);
+            insert.setString(++parameterIndex,mood);
+            insert.setInt(++parameterIndex, timelength);
+
+            insert.executeUpdate();
+            ContentDAO.log.info(title + " added to content");
+            System.out.println("Thanks for the new content!");
+        }
+
+
     }
 }
 

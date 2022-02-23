@@ -57,17 +57,17 @@ public final class Driver {
                 while (mood == null & timelength == 0) {
                     System.out.println("What is your current mood?");
                     mood = sc2.nextLine();
-                    System.out.println("How much time do you have?");
+                    System.out.println("How much time do you have (in minutes)?");
                     timelength = Integer.parseInt(sc2.nextLine());
                     System.out.println("Your input: " + mood + ", " + timelength);
                 }
                 try {
 //                    System.out.println("test1");
                     Content content = contentdao.MoodandTime(mood, timelength);
-//                    System.out.println("test2");
+//                    System.out.println("test2"`);
                     //Print the content here or something
                     if (content == null){
-                        System.out.println("null");
+                        //System.out.println("null");
                         continue;
                     }else {
                         System.out.println(content.toString());
